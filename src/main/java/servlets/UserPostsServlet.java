@@ -34,7 +34,7 @@ public class UserPostsServlet extends HttpServlet {
                 post.setTitle(resultSet.getString("title"));
                 post.setContent(resultSet.getString("content"));
                 post.setAuthor(resultSet.getString("author"));
-                post.setDate(resultSet.getDate("date"));
+                post.setDate(resultSet.getDate("dates"));
                 posts.add(post);
             }
         } catch (SQLException e) {

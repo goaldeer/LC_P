@@ -2,8 +2,11 @@
 <%@ page import="java.util.List" %>
 <%
     List<PostBean> posts = (List<PostBean>) request.getAttribute("posts");
-    int currentPage = (int) request.getAttribute("currentPage");
-    int recordsPerPage = (int) request.getAttribute("recordsPerPage");
+    Integer currentPageObj = (Integer) request.getAttribute("currentPage");
+    Integer recordsPerPageObj = (Integer) request.getAttribute("recordsPerPage");
+    
+    int currentPage = (currentPageObj != null) ? currentPageObj : 1; // default to page 1 if null
+    int recordsPerPage = (recordsPerPageObj != null) ? recordsPerPageObj : 20; // default to 20 records per page if null
 %>
 <!DOCTYPE html>
 <html>
@@ -13,29 +16,45 @@
 <body>
     <h2>Posts</h2>
     <%
-        for (PostBean post : posts) {
-            out.println("<div>");
-            out.println("<h3>" + post.getTitle() + "</h3>");
-            out.println("<p>" + post.getContent() + "</p>");
-            out.println("<p>Author: <a href='userProfile.jsp?username=" + post.getAuthor() + "'>" + post.getAuthor() + "</a></p>");
-            out.println("<p>Date: " + post.getDate() + "</p>");
-            out.println("</div>");
+        if (posts != null && !posts.isEmpty()) {
+            for (PostBean post : posts) {
+    %>
+                <div>
+                    <h3><%= post.getTitle() %></h3>
+                    <p><%= post.getContent() %></p>
+                    <p>Author: <a href="userProfile.jsp?username=<%= post.getAuthor() %>"><%= post.getAuthor() %></a></p>
+                    <p>Date: <%= post.getDate() %></p>
+                </div>
+    <%
+            }
+        } else {
+    %>
+            <p>No posts available.</p>
+    <%
         }
     %>
     <%
-        int rows = 100; // total rows from the database
+        int rows = 100; // This should be dynamically fetched from the database
         int nOfPages = rows / recordsPerPage;
         if (rows % recordsPerPage > 0) {
             nOfPages++;
         }
+    %>
+    <div>
+    <%
         for (int i = 1; i <= nOfPages; i++) {
             if (i == currentPage) {
-                out.println(i);
+    %>
+                <strong><%= i %></strong>
+    <%
             } else {
-                out.println("<a href='viewPosts.jsp?page=" + i + "'>" + i + "</a>");
+    %>
+                <a href="viewPosts?page=<%= i %>"><%= i %></a>
+    <%
             }
         }
     %>
+    </div>
     <a href="profile.jsp">Back to Profile</a>
 </body>
 </html>

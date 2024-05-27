@@ -7,7 +7,7 @@ public class PostBean {
     private String title;
     private String content;
     private String author;
-    private Date date;
+    private Date dates;
 
     // Getters and setters
     public int getPostId() {
@@ -35,9 +35,9 @@ public class PostBean {
         this.author = author;
     }
     public Date getDate() {
-        return date;
+        return dates;
     }
     public void setDate(Date date) {
-        this.date = date;
+        this.dates = date;
     }
 }
